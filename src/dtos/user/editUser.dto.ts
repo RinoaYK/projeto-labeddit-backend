@@ -3,6 +3,7 @@ import z from "zod";
 export interface EditUserInputDTO {
   idToEdit: string;
   token: string;
+  nickname: string;
   email: string;
   password: string;
   avatar: string;
@@ -26,6 +27,15 @@ export const EditUserSchema = z
         invalid_type_error: "'token' deve ser do tipo string",
       })
       .min(1, "'token' deve possuir no mínimo 1 caractere"),
+    nickname: z
+      .string({
+        required_error: "'nickname' é obrigatório",
+        invalid_type_error: "'nickname' deve ser do tipo string",
+      })
+      .regex(
+        /^[a-zA-Z]{5,}$/,
+        "'nickname' deve ter pelo menos 5 caracteres, sem espaços e sem caracteres especiais."
+      ),
     email: z
       .string({
         invalid_type_error: "'email' deve ser do tipo string",

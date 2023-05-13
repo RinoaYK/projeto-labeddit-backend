@@ -47,11 +47,11 @@ export class User {
     this.id = value;
   }
 
-  get getName(): string {
+  get getNickname(): string {
     return this.nickname;
   }
 
-  set setName(value: string) {
+  set setNickname(value: string) {
     this.nickname = value;
   }
 
