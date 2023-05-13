@@ -14,3 +14,13 @@ const postController = new PostController(
         new TokenManager()
     )
 )
+
+postRouter.post("/", postController.createPost);
+
+postRouter.get("/", postController.getPosts);
+postRouter.get("/:nickname", postController.getPostsByUserNickname);
+
+postRouter.put("/:id", postController.editPost);
+postRouter.delete("/:id", postController.deletePost);
+
+postRouter.put("/:id/like", postController.likeOrDislikePost);

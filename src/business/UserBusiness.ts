@@ -137,8 +137,8 @@ export class UserBusiness {
 
     const payload = this.tokenManager.getPayload(token);
 
-    if (payload === null) {
-      throw new BadRequestError("'token' inválido!");
+    if (!payload) {
+      throw new UnauthorizedError();
     }
 
     if (payload.role !== USER_ROLES.ADMIN) {
