@@ -8,6 +8,17 @@ export interface PostDB {
   updated_at: string;
 }
 
+export interface PostDBWithCreatorName {
+  id: string;
+  creator_id: string;
+  content: string;
+  likes: number;
+  dislikes: number;
+  created_at: string;
+  updated_at: string;
+  creator_nickname: string;
+}
+
 export interface PostModel {
   id: string;
   content: string;
@@ -17,8 +28,19 @@ export interface PostModel {
   updatedAt: string;
   creator: {
     id: string;
-    name: string;
+    nickname: string;
   };
+}
+
+export interface LikeDislikeDB {
+  user_id: string;
+  post_id: string;
+  like: number;
+}
+
+export enum POST_LIKE {
+  LIKED = "already like",
+  DISLIKED = "already dislike",
 }
 
 export class Post {
@@ -30,7 +52,7 @@ export class Post {
     private createdAt: string,
     private updatedAt: string,
     private creatorId: string,
-    private creatorName: string
+    private creatorNickname: string
   ) {}
 
   get getId(): string {
@@ -41,11 +63,11 @@ export class Post {
     this.id = value;
   }
 
-  get getName(): string {
+  get getContent(): string {
     return this.content;
   }
 
-  set setName(value: string) {
+  set setContent(value: string) {
     this.content = value;
   }
 
@@ -105,12 +127,12 @@ export class Post {
     this.creatorId = value;
   }
 
-  get getCreatorName(): string {
-    return this.creatorName;
+  get getCreatorNickname(): string {
+    return this.creatorNickname;
   }
 
-  set setCreatorName(value: string) {
-    this.creatorName = value;
+  set setCreatorNickname(value: string) {
+    this.creatorNickname = value;
   }
 
   public toDBModel(): PostDB {
@@ -135,7 +157,7 @@ export class Post {
       updatedAt: this.updatedAt,
       creator: {
         id: this.creatorId,
-        name: this.creatorName,
+        nickname: this.creatorNickname,
       },
     };
   }
