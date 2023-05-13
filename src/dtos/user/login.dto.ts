@@ -1,7 +1,7 @@
 import z from "zod";
 
 export interface LoginInputDTO {
-  nickname: string;
+  email: string;
   password: string;
 }
 
@@ -11,14 +11,12 @@ export interface LoginOutputDTO {
 
 export const LoginSchema = z
   .object({
-    nickname: z
-      .string({
-        required_error: "'nickname' é obrigatório",
-        invalid_type_error: "'nickname' deve ser do tipo string"})
-      .regex(
-        /^[a-zA-Z]{5,}$/,
-        "'nickname' deve ter pelo menos 5 caracteres, sem espaços e sem caracteres especiais."
-      ), 
+    email: z
+    .string({
+      required_error: "'email' é obrigatório",
+      invalid_type_error: "'email' deve ser do tipo string",
+    })
+    .email("'email' inválido"), 
     password: z
       .string({
         required_error: "'password' é obrigatório",
