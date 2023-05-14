@@ -8,7 +8,7 @@ export interface GetCommentsByPostInputDTO {
 
 export type GetCommentsByPostOutputDTO = CommentModel | CommentModel[];
 
-export const GetPostsByUserNicknameSchema = z
+export const GetCommentsByPostSchema = z
   .object({
     postId: z
       .string({
