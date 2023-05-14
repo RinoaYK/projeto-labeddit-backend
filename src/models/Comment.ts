@@ -9,8 +9,22 @@ export interface CommentDB {
   updated_at: string;
 }
 
+export interface CommentDBWithCreatorName {
+  id: string;
+  creator_id: string;
+  post_id: string;
+  content: string;
+  likes: number;
+  dislikes: number;
+  created_at: string;
+  updated_at: string;
+  creator_nickname: string;
+  creator_avatar: string;
+}
+
 export interface CommentModel {
   id: string;
+  postId: string;
   content: string;
   likes: number;
   dislikes: number;
@@ -18,21 +32,34 @@ export interface CommentModel {
   updatedAt: string;
   creator: {
     id: string;
-    name: string;
+    nickname: string;
+    avatar: string;
   };
+}
+
+export interface LikeDislikeDB {
+  user_id: string;
+  comment_id: string;
+  like: number;
+}
+
+export enum COMMENT_LIKE {
+  LIKED = "already like",
+  DISLIKED = "already dislike",
 }
 
 export class Comment {
   constructor(
     private id: string,
+    private postId: string,
     private content: string,
     private likes: number,
     private dislikes: number,
     private createdAt: string,
     private updatedAt: string,
-    private postId: string,
     private creatorId: string,
-    private creatorName: string
+    private creatorNickname: string,
+    private creatorAvatar: string
   ) {}
 
   get getId(): string {
@@ -43,11 +70,19 @@ export class Comment {
     this.id = value;
   }
 
-  get getName(): string {
+  get getPostId(): string {
+    return this.postId;
+  }
+
+  set setPostId(value: string) {
+    this.postId = value;
+  }
+
+  get getContent(): string {
     return this.content;
   }
 
-  set setName(value: string) {
+  set setContent(value: string) {
     this.content = value;
   }
 
@@ -107,27 +142,27 @@ export class Comment {
     this.creatorId = value;
   }
 
-  get getPostId(): string {
-    return this.postId;
+  get getCreatorNickname(): string {
+    return this.creatorNickname;
   }
 
-  set setPostId(value: string) {
-    this.postId = value;
+  set setCreatorNickname(value: string) {
+    this.creatorNickname = value;
   }
 
-  get getCreatorName(): string {
-    return this.creatorName;
+  get getCreatorAvatar(): string {
+    return this.creatorAvatar;
   }
 
-  set setCreatorName(value: string) {
-    this.creatorName = value;
+  set setCreatorAvatar(value: string) {
+    this.creatorAvatar = value;
   }
-
+  
   public toDBModel(): CommentDB {
     return {
       id: this.id,
-      creator_id: this.creatorId,
       post_id: this.postId,
+      creator_id: this.creatorId,
       content: this.content,
       likes: this.likes,
       dislikes: this.dislikes,
@@ -139,6 +174,7 @@ export class Comment {
   public toBusinessModel(): CommentModel {
     return {
       id: this.id,
+      postId: this.postId,
       content: this.content,
       likes: this.likes,
       dislikes: this.dislikes,
@@ -146,7 +182,8 @@ export class Comment {
       updatedAt: this.updatedAt,
       creator: {
         id: this.creatorId,
-        name: this.creatorName,
+        nickname: this.creatorNickname,
+        avatar: this.creatorAvatar,
       },
     };
   }
