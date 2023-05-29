@@ -60,14 +60,9 @@ export class UserBusiness {
       dateString
     );
 
-    if (avatar) {
-      user.setAvatar = avatar;
-    } else {
-      const defaultAvatar =
-        "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
-
-      user.setAvatar = defaultAvatar;
-    }
+    user.setAvatar = avatar
+      ? avatar
+      : "https://raw.githubusercontent.com/RinoaYK/projeto-labeddit-fullstack/main/src/images/defaultUser.png";
 
     const userDB = user.toDBModel();
     await this.userDatabase.insertUser(userDB);
@@ -81,6 +76,7 @@ export class UserBusiness {
     const token = this.tokenManager.createToken(payload);
 
     const output: SignupOutputDTO = {
+      message: "Cadastro realizado com sucesso",
       token,
     };
 
@@ -124,6 +120,7 @@ export class UserBusiness {
     const token = this.tokenManager.createToken(tokenPayload);
 
     const output: LoginOutputDTO = {
+      message: "Login realizado com sucesso",
       token,
     };
 
@@ -141,10 +138,6 @@ export class UserBusiness {
       throw new UnauthorizedError();
     }
 
-    if (payload.role !== USER_ROLES.ADMIN) {
-      throw new BadRequestError("Somente admins podem acessar getUsers!");
-    }
-
     const usersDB = await this.userDatabase.findUsers(q);
 
     const users = usersDB.map((userDB) => {
@@ -157,7 +150,6 @@ export class UserBusiness {
         userDB.avatar,
         userDB.created_at
       );
-
       return user.toBusinessModel();
     });
 

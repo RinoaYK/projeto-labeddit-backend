@@ -70,7 +70,7 @@ export class CommentDatabase extends BaseDatabase {
         `${UserDatabase.TABLE_USERS}.nickname as creator_nickname`,
         `${UserDatabase.TABLE_USERS}.avatar as creator_avatar`
       )
-      .where({ creator_nickname: nickname })
+      .where(`${UserDatabase.TABLE_USERS}.nickname`, nickname)
       .join(
         `${UserDatabase.TABLE_USERS}`,
         `${CommentDatabase.TABLE_COMMENTS}.creator_id`,
@@ -107,7 +107,6 @@ export class CommentDatabase extends BaseDatabase {
 
     return result as CommentDBWithCreatorName[];
   };
-
 
   public findCommentById = async (
     id: string
@@ -149,29 +148,31 @@ export class CommentDatabase extends BaseDatabase {
   public findCommentWithCreatorNameById = async (
     id: string
   ): Promise<CommentDBWithCreatorName | undefined> => {
-        const [result] = await BaseDatabase.connection(CommentDatabase.TABLE_COMMENTS)
-          .select(
-            `${CommentDatabase.TABLE_COMMENTS}.id`,
-            `${CommentDatabase.TABLE_COMMENTS}.creator_id`,
-            `${CommentDatabase.TABLE_COMMENTS}.post_id`,
-            `${CommentDatabase.TABLE_COMMENTS}.content`,
-            `${CommentDatabase.TABLE_COMMENTS}.likes`,
-            `${CommentDatabase.TABLE_COMMENTS}.dislikes`,
-            `${CommentDatabase.TABLE_COMMENTS}.created_at`,
-            `${CommentDatabase.TABLE_COMMENTS}.updated_at`,
-            `${UserDatabase.TABLE_USERS}.nickname as creator_nickname`,
-            `${UserDatabase.TABLE_USERS}.avatar as creator_avatar`
-          )
-          .join(
-            `${UserDatabase.TABLE_USERS}`,
-            `${CommentDatabase.TABLE_COMMENTS}.creator_id`,
-            "=",
-            `${UserDatabase.TABLE_USERS}.id`
-          )
-          .where({ [`${CommentDatabase.TABLE_COMMENTS}.id`]: id });
-    
-        return result as CommentDBWithCreatorName | undefined;
-      };
+    const [result] = await BaseDatabase.connection(
+      CommentDatabase.TABLE_COMMENTS
+    )
+      .select(
+        `${CommentDatabase.TABLE_COMMENTS}.id`,
+        `${CommentDatabase.TABLE_COMMENTS}.creator_id`,
+        `${CommentDatabase.TABLE_COMMENTS}.post_id`,
+        `${CommentDatabase.TABLE_COMMENTS}.content`,
+        `${CommentDatabase.TABLE_COMMENTS}.likes`,
+        `${CommentDatabase.TABLE_COMMENTS}.dislikes`,
+        `${CommentDatabase.TABLE_COMMENTS}.created_at`,
+        `${CommentDatabase.TABLE_COMMENTS}.updated_at`,
+        `${UserDatabase.TABLE_USERS}.nickname as creator_nickname`,
+        `${UserDatabase.TABLE_USERS}.avatar as creator_avatar`
+      )
+      .join(
+        `${UserDatabase.TABLE_USERS}`,
+        `${CommentDatabase.TABLE_COMMENTS}.creator_id`,
+        "=",
+        `${UserDatabase.TABLE_USERS}.id`
+      )
+      .where({ [`${CommentDatabase.TABLE_COMMENTS}.id`]: id });
+
+    return result as CommentDBWithCreatorName | undefined;
+  };
 
   public findLikeDislike = async (
     likeDislikeDB: LikeDislikeDB
@@ -223,5 +224,12 @@ export class CommentDatabase extends BaseDatabase {
     await BaseDatabase.connection(
       CommentDatabase.TABLE_LIKES_DISLIKES_COMMENTS
     ).insert(likeDislikeDB);
+  };
+
+  public getCommentsLikeDeslike = async (): Promise<LikeDislikeDB[]> => {
+    const result = await BaseDatabase.connection(
+      CommentDatabase.TABLE_LIKES_DISLIKES_COMMENTS
+    );
+    return result as LikeDislikeDB[];
   };
 }

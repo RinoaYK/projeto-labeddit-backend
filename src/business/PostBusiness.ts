@@ -9,7 +9,14 @@ import {
 } from "../dtos/post/deletePost.dto";
 import { EditPostInputDTO, EditPostOutputDTO } from "../dtos/post/editPost.dto";
 import { GetPostsInputDTO, GetPostsOutputDTO } from "../dtos/post/getPosts.dto";
-import { GetPostsByUserNicknameInputDTO, GetPostsByUserNicknameOutputDTO } from "../dtos/post/getPostsByUserNickname.dto";
+import {
+  GetPostsByUserNicknameInputDTO,
+  GetPostsByUserNicknameOutputDTO,
+} from "../dtos/post/getPostsByUserNickname.dto";
+import {
+  GetPostsLikesDislikesInputDTO,
+  GetPostsLikesDislikesOutputDTO,
+} from "../dtos/post/getPostsLikesDislikes.dto";
 import {
   LikeOrDislikePostInputDTO,
   LikeOrDislikePostOutputDTO,
@@ -18,7 +25,12 @@ import { ConflictError } from "../errors/ConflictError";
 import { ForbiddenError } from "../errors/ForbiddenError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { UnauthorizedError } from "../errors/UnauthorizedError";
-import { LikeDislikeDB, POST_LIKE, Post } from "../models/Post";
+import {
+  LikeDislikeDB,
+  POST_LIKE,
+  Post,
+  PostLikeDislike,
+} from "../models/Post";
 import { USER_ROLES } from "../models/User";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
@@ -77,8 +89,8 @@ export class PostBusiness {
     await this.postDatabase.insertPost(postDB);
 
     const output: CreatePostOutputDTO = {
-        message: "Post criado  com sucesso!"
-      }
+      message: "Post criado com sucesso!",
+    };
 
     return output;
   };
@@ -145,7 +157,9 @@ export class PostBusiness {
 
       if (payload.role !== USER_ROLES.ADMIN) {
         if (payload.id !== postWithCreatorName.creator_id) {
-          throw new ForbiddenError("Somente admin e o próprio usuário podem acessar esse endpoint!");
+          throw new ForbiddenError(
+            "Somente admin e o próprio usuário podem acessar esse endpoint!"
+          );
         }
       }
 
@@ -175,7 +189,7 @@ export class PostBusiness {
     }
 
     if (payload.id !== postDB.creator_id) {
-      throw new ForbiddenError("Somente quem criou o 'post' pode editá-la!");
+      throw new ForbiddenError("Somente quem criou o 'post' pode editar!");
     }
 
     const contentDB = await this.postDatabase.findPostByContent(
@@ -186,6 +200,15 @@ export class PostBusiness {
     if (contentDB) {
       throw new ConflictError("Já existe um 'post' com esse conteúdo!");
     }
+
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hour = String(date.getHours()).padStart(2, "0");
+    const minute = String(date.getMinutes()).padStart(2, "0");
+    const second = String(date.getSeconds()).padStart(2, "0");
+    const dateString = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 
     const post = new Post(
       postDB.id,
@@ -199,13 +222,14 @@ export class PostBusiness {
     );
 
     post.setContent = content;
+    post.setUpdatedAt = dateString;
 
     const updatedPostDB = post.toDBModel();
     await this.postDatabase.updatePost(updatedPostDB);
 
     const output: EditPostOutputDTO = {
-        message: "'post' editado com sucesso!"
-    }
+      message: "'post' editado com sucesso!",
+    };
 
     return output;
   };
@@ -235,7 +259,9 @@ export class PostBusiness {
 
     await this.postDatabase.deletePostById(idToDelete);
 
-    const output: DeletePostOutputDTO = { message: "'post' deletado com sucesso!"}
+    const output: DeletePostOutputDTO = {
+      message: "'post' deletado com sucesso!",
+    };
 
     return output;
   };
@@ -314,6 +340,34 @@ export class PostBusiness {
     await this.postDatabase.updatePost(updatedPostDB);
 
     const output: LikeOrDislikePostOutputDTO = undefined;
+
+    return output;
+  };
+
+  public getPostsLikesDislikes = async (
+    input: GetPostsLikesDislikesInputDTO
+  ): Promise<GetPostsLikesDislikesOutputDTO> => {
+    const { token } = input;
+
+    const payload = this.tokenManager.getPayload(token);
+
+    if (!payload) {
+      throw new UnauthorizedError();
+    }
+
+    const posts = await this.postDatabase.getPostsLikeDeslike();
+
+    const postsLikeDislike = posts.map((postLD) => {
+      const postLikeDislike = new PostLikeDislike(
+        postLD.user_id,
+        postLD.post_id,
+        postLD.like
+      );
+
+      return postLikeDislike.toBusinessModel();
+    });
+
+    const output: GetPostsLikesDislikesOutputDTO = postsLikeDislike;
 
     return output;
   };

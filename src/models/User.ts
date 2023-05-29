@@ -43,10 +43,6 @@ export class User {
     return this.id;
   }
 
-  set setId(value: string) {
-    this.id = value;
-  }
-
   get getNickname(): string {
     return this.nickname;
   }
@@ -55,16 +51,8 @@ export class User {
     this.nickname = value;
   }
 
-  get getEmail(): string {
-    return this.email;
-  }
-
   set setEmail(value: string) {
     this.email = value;
-  }
-
-  get getPassword(): string {
-    return this.password;
   }
 
   set setPassword(value: string) {
@@ -73,22 +61,6 @@ export class User {
 
   get getRole(): USER_ROLES {
     return this.role;
-  }
-
-  set setRole(value: USER_ROLES) {
-    this.role = value;
-  }
-
-  get getCreatedAt(): string {
-    return this.createdAt;
-  }
-
-  set setCreatedAt(value: string) {
-    this.createdAt = value;
-  }
-
-  get getAvatar(): string {
-    return this.avatar;
   }
 
   set setAvatar(value: string) {

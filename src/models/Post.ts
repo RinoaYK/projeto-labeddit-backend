@@ -38,6 +38,28 @@ export interface LikeDislikeDB {
   like: number;
 }
 
+export interface PostLikeDislikeModel {
+  userId: string;
+  postId: string;
+  like: number;
+}
+
+export class PostLikeDislike {
+  constructor(
+    private userId: string,
+    private postId: string,
+    private like: number
+  ) {}
+
+  public toBusinessModel(): PostLikeDislikeModel {
+    return {
+      userId: this.userId,
+      postId: this.postId,
+      like: this.like,
+    };
+  }
+}
+
 export enum POST_LIKE {
   LIKED = "already like",
   DISLIKED = "already dislike",
@@ -55,28 +77,12 @@ export class Post {
     private creatorNickname: string
   ) {}
 
-  get getId(): string {
-    return this.id;
-  }
-
-  set setId(value: string) {
-    this.id = value;
-  }
-
-  get getContent(): string {
-    return this.content;
-  }
-
   set setContent(value: string) {
     this.content = value;
   }
 
-  get getLikes(): number {
-    return this.likes;
-  }
-
-  set setLikes(value: number) {
-    this.likes = value;
+  set setUpdatedAt(value: string) {
+    this.updatedAt = value;
   }
 
   public addLike(): void {
@@ -87,52 +93,12 @@ export class Post {
     this.likes -= 1;
   }
 
-  get getDislikes(): number {
-    return this.dislikes;
-  }
-
-  set setDislikes(value: number) {
-    this.dislikes = value;
-  }
-
   public addDislike() {
     this.dislikes += 1;
   }
 
   public removeDislike() {
     this.dislikes -= 1;
-  }
-
-  get getCreatedAt(): string {
-    return this.createdAt;
-  }
-
-  set setCreatedAt(value: string) {
-    this.createdAt = value;
-  }
-
-  get getUpdatedAt(): string {
-    return this.updatedAt;
-  }
-
-  set setUpdatedAt(value: string) {
-    this.updatedAt = value;
-  }
-
-  get getCreatorId(): string {
-    return this.creatorId;
-  }
-
-  set setCreatorId(value: string) {
-    this.creatorId = value;
-  }
-
-  get getCreatorNickname(): string {
-    return this.creatorNickname;
-  }
-
-  set setCreatorNickname(value: string) {
-    this.creatorNickname = value;
   }
 
   public toDBModel(): PostDB {
