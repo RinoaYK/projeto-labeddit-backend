@@ -1,4 +1,4 @@
--- Active: 1683986580336@@127.0.0.1@3306
+-- Active: 1685384571940@@127.0.0.1@3306
 
 CREATE TABLE users (
     id TEXT PRIMARY KEY UNIQUE NOT NULL,
@@ -154,3 +154,6 @@ UPDATE comments SET likes = 1 WHERE id = "c003";
 UPDATE comments SET likes = 1 WHERE id = "c004";
 
 UPDATE comments SET likes = 3 WHERE id = "c005";
+
+DELETE FROM users
+WHERE nickname = "";
