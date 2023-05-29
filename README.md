@@ -8,3 +8,6 @@ https://projeto-labeddit-backend-ust7.onrender.com
 Projeto frontend Labeddit
 link do deploy do frontend:
 https://labeddit-lidia-yamamura.surge.sh/
+
+link do  github:
+https://github.com/RinoaYK/projeto-labeddit-fullstack
