@@ -165,8 +165,15 @@ export class PostDatabase extends BaseDatabase {
   public insertLikeDislike = async (
     likeDislikeDB: LikeDislikeDB
   ): Promise<void> => {
-    await BaseDatabase.connection(PostDatabase.TABLE_LIKES_DISLIKES_POSTS).insert(
-      likeDislikeDB
+    await BaseDatabase.connection(
+      PostDatabase.TABLE_LIKES_DISLIKES_POSTS
+    ).insert(likeDislikeDB);
+  };
+
+  public getPostsLikeDeslike = async (): Promise<LikeDislikeDB[]> => {
+    const result = await BaseDatabase.connection(
+      PostDatabase.TABLE_LIKES_DISLIKES_POSTS
     );
+    return result as LikeDislikeDB[];
   };
 }

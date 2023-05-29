@@ -43,6 +43,28 @@ export interface LikeDislikeDB {
   like: number;
 }
 
+export interface CommentLikeDislikeModel {
+  userId: string;
+  commentId: string;
+  like: number;
+}
+
+export class CommentLikeDislike {
+  constructor(
+    private userId: string,
+    private commentId: string,
+    private like: number
+  ) {}
+
+  public toBusinessModel(): CommentLikeDislikeModel {
+    return {
+      userId: this.userId,
+      commentId: this.commentId,
+      like: this.like,
+    };
+  }
+}
+
 export enum COMMENT_LIKE {
   LIKED = "already like",
   DISLIKED = "already dislike",
@@ -62,36 +84,11 @@ export class Comment {
     private creatorAvatar: string
   ) {}
 
-  get getId(): string {
-    return this.id;
-  }
-
-  set setId(value: string) {
-    this.id = value;
-  }
-
-  get getPostId(): string {
-    return this.postId;
-  }
-
-  set setPostId(value: string) {
-    this.postId = value;
-  }
-
-  get getContent(): string {
-    return this.content;
-  }
-
   set setContent(value: string) {
     this.content = value;
   }
-
-  get getLikes(): number {
-    return this.likes;
-  }
-
-  set setLikes(value: number) {
-    this.likes = value;
+  set setUpdatedAt(value: string) {
+    this.updatedAt = value;
   }
 
   public addLike(): void {
@@ -102,14 +99,6 @@ export class Comment {
     this.likes -= 1;
   }
 
-  get getDislikes(): number {
-    return this.dislikes;
-  }
-
-  set setDislikes(value: number) {
-    this.dislikes = value;
-  }
-
   public addDislike() {
     this.dislikes += 1;
   }
@@ -118,46 +107,6 @@ export class Comment {
     this.dislikes -= 1;
   }
 
-  get getCreatedAt(): string {
-    return this.createdAt;
-  }
-
-  set setCreatedAt(value: string) {
-    this.createdAt = value;
-  }
-
-  get getUpdatedAt(): string {
-    return this.updatedAt;
-  }
-
-  set setUpdatedAt(value: string) {
-    this.updatedAt = value;
-  }
-
-  get getCreatorId(): string {
-    return this.creatorId;
-  }
-
-  set setCreatorId(value: string) {
-    this.creatorId = value;
-  }
-
-  get getCreatorNickname(): string {
-    return this.creatorNickname;
-  }
-
-  set setCreatorNickname(value: string) {
-    this.creatorNickname = value;
-  }
-
-  get getCreatorAvatar(): string {
-    return this.creatorAvatar;
-  }
-
-  set setCreatorAvatar(value: string) {
-    this.creatorAvatar = value;
-  }
-  
   public toDBModel(): CommentDB {
     return {
       id: this.id,

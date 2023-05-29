@@ -9,6 +9,7 @@ import { DeleteCommentSchema } from "../dtos/comment/deleteComment.dto";
 import { LikeOrDislikeCommentSchema } from "../dtos/comment/likeOrDislikeComment.dto";
 import { GetCommentsByUserNicknameSchema } from "../dtos/comment/getCommentsByUserNickname.dto";
 import { GetCommentsByPostSchema } from "../dtos/comment/getCommentsByPost.dto";
+import { GetCommentsLikesDislikesSchema } from "../dtos/comment/getCommentsLikesDislikes.dto";
 
 export class CommentController {
   constructor(private commentBusiness: CommentBusiness) {}
@@ -162,6 +163,28 @@ export class CommentController {
       });
 
       const output = await this.commentBusiness.likeOrDislikeComment(input);
+
+      res.status(200).send(output);
+    } catch (error) {
+      console.log(error);
+
+      if (error instanceof ZodError) {
+        res.status(400).send(error.issues);
+      } else if (error instanceof BaseError) {
+        res.status(error.statusCode).send(error.message);
+      } else {
+        res.status(500).send("Erro inesperado");
+      }
+    }
+  };
+
+  public getCommentsLikesDislikes = async (req: Request, res: Response) => {
+    try {
+      const input = GetCommentsLikesDislikesSchema.parse({
+        token: req.headers.authorization,
+      });
+
+      const output = await this.commentBusiness.getCommentsLikesDislikes(input);
 
       res.status(200).send(output);
     } catch (error) {

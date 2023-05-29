@@ -15,7 +15,7 @@ export class UserController {
         nickname: req.body.nickname,
         email: req.body.email,
         password: req.body.password,
-        avatar: req.body.avatar
+        avatar: req.body.avatar,
       });
 
       const output = await this.userBusiness.signup(input);

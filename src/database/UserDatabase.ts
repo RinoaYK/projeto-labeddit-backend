@@ -15,7 +15,9 @@ export class UserDatabase extends BaseDatabase {
     return userDB;
   }
 
-  public async findUserByNickname(nickname: string): Promise<UserDB | undefined> {
+  public async findUserByNickname(
+    nickname: string
+  ): Promise<UserDB | undefined> {
     const [userDB]: UserDB[] | undefined[] = await BaseDatabase.connection(
       UserDatabase.TABLE_USERS
     ).where({ nickname });
@@ -34,7 +36,7 @@ export class UserDatabase extends BaseDatabase {
     if (q) {
       const result: UserDB[] = await BaseDatabase.connection(
         UserDatabase.TABLE_USERS
-      ).where("nickname", "LIKE", `%${q}%`);
+      ).where("email", "LIKE", `${q}`);
 
       usersDB = result;
     } else {
@@ -45,11 +47,10 @@ export class UserDatabase extends BaseDatabase {
     }
     return usersDB;
   }
-  
+
   public updateUser = async (userDB: UserDB): Promise<void> => {
     await BaseDatabase.connection(UserDatabase.TABLE_USERS)
       .update(userDB)
       .where({ id: userDB.id });
   };
-  
 }
