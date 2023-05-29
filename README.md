@@ -42,7 +42,7 @@ A **API Labeddit** foi desenvolvida com as melhores práticas de programação e
 - Jest
 
 ## Banco de dados:
-![projeto-Labeddit]('')
+![projeto-Labeddit](https://raw.githubusercontent.com/RinoaYK/projeto-labeddit-backend/main/projeto-labeddit.png)
 
 # **API Labeddit**
 - Documentação [**Postman**](https://documenter.getpostman.com/view/25826614/2s93m8zLhc) com todos os endpoints;
@@ -114,6 +114,9 @@ A **API Labeddit** foi desenvolvida com as melhores práticas de programação e
     - Roteadores no Express
 - **Erros e testes**
     - Jest Coverage
+
+## Jest Coverage:
+![projeto-Labeddit](https://raw.githubusercontent.com/RinoaYK/projeto-labeddit-backend/main/jestCoverage.JPG)
 
 ## **Instalação:**
 
