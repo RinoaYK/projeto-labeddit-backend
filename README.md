@@ -1,4 +1,4 @@
-# Projeto Labeddit - backend
+# ![](https://raw.githubusercontent.com/RinoaYK/projeto-labeddit-fullstack/aaa012e084a09ccd694a4addec5bb452670fd4ec/src/images/Logo_menor.svg) Projeto Labeddit - backend
 Esse é o último projeto do curso da Labenu de Fullstack e por isso foi utilizado todo o conhecimento adquirido em back-end e front-end.
 
 A **API Labeddit** é parte do backend do **Projeto Labeddit Fullstack**, uma plataforma que busca proporcionar uma experiência semelhante ao **Reddit**.
