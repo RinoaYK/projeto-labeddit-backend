@@ -12,7 +12,7 @@ Para acessar os recursos protegidos, é necessário fornecer as credenciais de a
 A **API Labeddit** foi desenvolvida com as melhores práticas de programação e utiliza tecnologias modernas para garantir um desempenho otimizado e uma experiência de usuário agradável. A arquitetura do projeto foi projetada visando escalabilidade e manutenibilidade, proporcionando uma base sólida para o desenvolvimento futuro.
 
 #  - Lidia Yamamura -
-
+Para facilitar o processo de deploy, foram criados repositórios separados para o frontend e o backend.
 ### Veja a documentação: 
 [**API Labeddit documentação Postman**](https://documenter.getpostman.com/view/25826614/2s93m8zLhc): https://documenter.getpostman.com/view/25826614/2s93m8zLhc
 
