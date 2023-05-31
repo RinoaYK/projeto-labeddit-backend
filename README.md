@@ -29,8 +29,8 @@ Para facilitar o processo de deploy, foram criados repositórios separados para 
 ## **Tecnologias Utilizadas:**
 - NodeJS
 - Typescript
-- Express
-- SQL e SQLite
+- ExpressJS
+- SQLite
 - Knex
 - POO
 - Arquitetura em camadas
